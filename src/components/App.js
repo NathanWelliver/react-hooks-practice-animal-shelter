@@ -12,28 +12,20 @@ function App() {
   }
 
   function findPets() {
-    if(filters.type === "all"){
-      fetch("http://localhost:3001/pets")
+    let url = "http://localhost:3001/pets";
+    if(filters.type !== "all"){
+      url += `?type=${filters.type}`
+    }
+    fetch(url)
       .then(r => r.json())
       .then(data => setPets(data))
-    } else if (filters.type === "cat"){
-      fetch("http://localhost:3001/pets?type=cat")
-      .then(r => r.json())
-      .then(cats => setPets(cats))
-    } else if (filters.type === "dog"){
-      fetch("http://localhost:3001/pets?type=dog")
-      .then(r => r.json())
-      .then(dogs => setPets(dogs))
-    } else if (filters.type === "micropig"){
-      fetch("http://localhost:3001/pets?type=micropig")
-      .then(r => r.json())
-      .then(pigs => setPets(pigs))
-    }
-  }
+  };
 
-  function onAdoptPet(petId) {
-    
-  }
+  function onAdoptPet(id) {
+    setPets(pets.map(pet => 
+      pet.id === id ? {...pet, isAdopted: true} : pet
+    ));
+  };
 
   return (
     <div className="ui container">
